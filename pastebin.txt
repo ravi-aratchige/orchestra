@@ -1,0 +1,22 @@
+# get search results from results page
+results = driver.find_elements(By.TAG_NAME, "tr")
+
+# print titles and DOI links from results
+for result in results[0]:
+    try:
+        # get title and DOI from CrossRef
+        title = result.find_element(By.CLASS_NAME, "lead").text
+        links_section = result.find_element(By.CLASS_NAME, "item-links")
+        doi = links_section.find_element(By.TAG_NAME, "a").text.replace(
+            "https://doi.org/", ""
+        )
+        print(f"Title: {title}")
+        print(f"DOI: {doi}")
+
+        # open SciHub
+        driver.get("https://sci-hub.wf/")
+        scihub_search_field = driver.find_element(By.NAME, "request")
+        scihub_search_field.send_keys(doi)
+        scihub_search_field.send_keys(Keys.RETURN)
+    except NoSuchElementException:
+        print("Could not find p-tag in search result!")
