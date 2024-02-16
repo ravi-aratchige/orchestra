@@ -11,7 +11,9 @@ However, with Google Scholar, we get a preview of some (or all) of our search st
 
 ![[Pasted image 20240213013540.png]]
 
-This might be useful for performing semantic reranking of search results.
+This might be useful for performing semantic re-ranking of search results.
+
+<a href="https://arxiv.org/">arxiv.org</a> is not a good place for search, as it has a bad search engine, and usually doesn't have literature close to our search string anyways.
 
 ## Getting Metadata
 
@@ -22,3 +24,7 @@ Even if the exact literature is not found, Crossref will get the closest one pos
 ## Retrieving Papers
 
 This is the tricky part. How do we get research papers in a way that we can scrape data from them to ingest into the RAG pipeline?
+
+For medical research purposes, we can use Pubmed. Pubmed has a moderately good search engine, and almost all of the search results have abstracts (filters can also be applied to exclude literature without abstracts). This means, instead of reading through full literature,  we can rely on the abstracts of medical research.
+
+But we need to check the feasibility of this (whether we can rely on the abstracts only to produce good responses).
