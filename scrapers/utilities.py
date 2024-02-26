@@ -1,3 +1,4 @@
+import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -28,3 +29,7 @@ def set_up_driver():
     driver = webdriver.Chrome(options=chrome_options)
 
     return driver
+
+
+def sanitize_pubmed_authors(authors):
+    return re.sub(r"\d+", "", authors)
