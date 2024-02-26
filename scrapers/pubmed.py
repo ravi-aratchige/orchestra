@@ -41,7 +41,7 @@ def get_abstract(driver, search_str):
             "status": 404,
         }
 
-    # get abstract and metadata of paper
+    # get metadata and abstract of paper
     title = driver.find_element(By.CLASS_NAME, "heading-title").text
     pmid = driver.find_element(By.CLASS_NAME, "current-id").text
     authors = sanitize_pubmed_authors(
