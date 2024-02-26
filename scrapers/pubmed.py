@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
-from scrapers.utilities import set_up_driver
 from selenium.webdriver.common.keys import Keys
+from utilities import set_up_driver, sanitize_pubmed_authors
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -36,22 +36,29 @@ def get_abstract(driver, search_str):
         result.click()
         time.sleep(5)
     except NoSuchElementException:
-        print(f"Cannot find any search results for '{search_str}'!")
         return {
             "status": 404,
         }
 
-    # get information about paper
+    # get abstract and metadata of paper
     title = driver.find_element(By.CLASS_NAME, "heading-title").text
     pmid = driver.find_element(By.CLASS_NAME, "current-id").text
+    authors = sanitize_pubmed_authors(
+        driver.find_element(By.CLASS_NAME, "authors").text
+    )
     abstract = driver.find_element(
         By.XPATH,
-        "/html/body/div[5]/main/div[2]/div/p",
+        "/html/body/div[5]/main/div[2]/div",
     ).text
+
+    # NOTE
+    # authors must be sanitized (as done above) as sometimes numbers can be found next to author names,
+    # refering to their relevant university affiliation.
 
     return {
         "title": title,
         "pmid": pmid,
+        "authors": authors,
         "abstract": abstract,
         "status": 200,
     }
@@ -62,7 +69,7 @@ def main():
     driver = set_up_driver()
 
     # initialize search string for research paper(s)
-    search_str = "Multilayer GBR Technique"
+    search_str = "transmucosal implant placement"
 
     # get metadata (title and PMID) based on first result from search
     search_result = get_abstract(driver, search_str)
@@ -74,6 +81,7 @@ def main():
         print(f"Found the following research paper:")
         print(f"Title: {search_result['title']}")
         print(f"PMID: {search_result['pmid']}")
+        print(f"Authors: {search_result['authors']}")
         print(f"Abstract: {search_result['abstract']}")
         print(f"STATUS: {search_result['status']}")
     else:
