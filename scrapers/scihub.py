@@ -49,7 +49,7 @@ def get_paper_metadata(driver, search_str):
     driver.get("https://search.crossref.org/")
     time.sleep(5)
 
-    # enter search query
+    # locate search field and enter search query
     search_field = driver.find_element(By.ID, "search-input")
     search_field.send_keys(search_str)
     search_field.send_keys(Keys.RETURN)
