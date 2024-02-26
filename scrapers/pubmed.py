@@ -1,37 +1,8 @@
 import time
-from selenium import webdriver
 from selenium.webdriver.common.by import By
+from scrapers.utilities import set_up_driver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
-
-
-def set_up_driver():
-    """Set up a Chrome webdriver to browse the web.
-
-    Returns:
-        WebDriver: the Chrome webdriver
-    """
-    # ensure browser does not close after end of script execution
-    chrome_options = Options()
-    chrome_options.add_experimental_option("detach", True)
-
-    # set download path for PDFs
-    download_dir = "/home/ravindu-aratchige/Downloads"
-    chrome_options.add_experimental_option(
-        "prefs",
-        {
-            "download.default_directory": download_dir,
-            "download.prompt_for_download": False,
-            "download.directory_upgrade": True,
-            "plugins.always_open_pdf_externally": True,
-        },
-    )
-
-    # set up the Chromium web driver
-    driver = webdriver.Chrome(options=chrome_options)
-
-    return driver
 
 
 def get_abstract(driver, search_str):
@@ -73,10 +44,15 @@ def get_abstract(driver, search_str):
     # get information about paper
     title = driver.find_element(By.CLASS_NAME, "heading-title").text
     pmid = driver.find_element(By.CLASS_NAME, "current-id").text
+    abstract = driver.find_element(
+        By.XPATH,
+        "/html/body/div[5]/main/div[2]/div/p",
+    ).text
 
     return {
         "title": title,
         "pmid": pmid,
+        "abstract": abstract,
         "status": 200,
     }
 
@@ -86,17 +62,20 @@ def main():
     driver = set_up_driver()
 
     # initialize search string for research paper(s)
-    search_str = "transmucosal implant placement"
+    search_str = "Multilayer GBR Technique"
 
     # get metadata (title and PMID) based on first result from search
     search_result = get_abstract(driver, search_str)
 
     if search_result["status"] == 404:
         print("Sorry, no research paper found!")
+        print(f"STATUS: {search_result['status']}")
     elif search_result["status"] == 200:
         print(f"Found the following research paper:")
         print(f"Title: {search_result['title']}")
         print(f"PMID: {search_result['pmid']}")
+        print(f"Abstract: {search_result['abstract']}")
+        print(f"STATUS: {search_result['status']}")
     else:
         print(f"An unknown error has occured.")
 
