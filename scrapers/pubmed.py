@@ -18,6 +18,7 @@ def get_abstract(driver, search_str):
         - research paper metadata (title and DOI)
         - the status code for the paper retrieval
     """
+
     # open the PubMed search page
     driver.get("https://pubmed.ncbi.nlm.nih.gov/")
 

@@ -16,6 +16,7 @@ def get_paper_metadata(driver, search_str):
     Returns:
         dict[str, str]: a dictionary containing research paper metadata (title and DOI)
     """
+
     # open the Crossref webpage
     driver.get("https://search.crossref.org/")
     time.sleep(5)
@@ -50,6 +51,7 @@ def download_paper(driver, metadata):
         driver (WebDriver): the Chrome webdriver needed to visit the SciHub webpage
         metadata (dict[str, str]): the metadata of the research paper to be downloaded
     """
+
     # open SciHub
     # try:
     #     driver.get("https://sci-hub.wf/")
