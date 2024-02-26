@@ -18,8 +18,19 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "25d2cc903e6abd77",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.5.3"
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -146,7 +157,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9ae538a162b6a913",
+  "active": "25d2cc903e6abd77",
   "lastOpenFiles": [
     "Pasted image 20240213013540.png",
     "Data Collection 🧺.md"
