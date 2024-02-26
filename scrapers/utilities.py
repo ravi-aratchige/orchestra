@@ -32,4 +32,21 @@ def set_up_driver():
 
 
 def sanitize_pubmed_authors(authors):
-    return re.sub(r"\d+", "", authors)
+    """Sanitize a list of PubMed article authors by
+    - Removing numbers (references to the institutional affiliations of the authors)
+    - Removing whitespace left beside the numbers
+
+    Args:
+        authors (str): a unsanitized string of authors, separated by commas
+
+    Returns:
+        str: a sanitized string of authors
+    """
+
+    # remove numbers
+    authors = re.sub(r"\d+", "", authors)
+
+    # remove additional spaces (added by whitespace next to numbers)
+    sanitized_authors = re.sub("   ", "", authors)
+
+    return sanitized_authors
