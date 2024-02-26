@@ -1,6 +1,6 @@
 import time
+from utilities import set_up_driver
 from selenium.webdriver.common.by import By
-from scrapers.utilities import set_up_driver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
