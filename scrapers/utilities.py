@@ -50,3 +50,7 @@ def sanitize_pubmed_authors(authors):
     sanitized_authors = re.sub("   ", "", authors)
 
     return sanitized_authors
+
+
+if __name__ == "__main__":
+    pass

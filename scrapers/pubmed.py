@@ -1,11 +1,11 @@
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from utilities import set_up_driver, sanitize_pubmed_authors
+from .utilities import set_up_driver, sanitize_pubmed_authors
 from selenium.common.exceptions import NoSuchElementException
 
 
-def get_abstract(driver, search_str):
+def get_metadata_and_abstract(driver, search_str):
     """Get metadata (title and PMID) for the research paper
     obtained as the top result of searching on PubMed.
 
@@ -73,7 +73,7 @@ def main():
     search_str = "transmucosal implant placement"
 
     # get metadata (title and PMID) based on first result from search
-    search_result = get_abstract(driver, search_str)
+    search_result = get_metadata_and_abstract(driver, search_str)
 
     if search_result["status"] == 404:
         print("Sorry, no research paper found!")

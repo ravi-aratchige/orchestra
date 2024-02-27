@@ -20,12 +20,14 @@
             }
           },
           {
-            "id": "25d2cc903e6abd77",
+            "id": "d3df14e1274b5fa8",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.5.3"
+                "file": "Agents 🤖.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -96,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Data Collection 🧺.md",
+                "file": "Agents 🤖.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Data Collection 🧺.md",
+                "file": "Agents 🤖.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -136,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Data Collection 🧺.md"
+                "file": "Agents 🤖.md"
               }
             }
           }
@@ -157,9 +159,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "25d2cc903e6abd77",
+  "active": "d3df14e1274b5fa8",
   "lastOpenFiles": [
-    "Pasted image 20240213013540.png",
-    "Data Collection 🧺.md"
+    "Data Collection 🧺.md",
+    "Agents 🤖.md",
+    "Pasted image 20240213013540.png"
   ]
 }
