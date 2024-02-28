@@ -5,7 +5,7 @@ from .utilities import set_up_driver, sanitize_pubmed_authors
 from selenium.common.exceptions import NoSuchElementException
 
 
-def get_metadata_and_abstract(driver, search_str):
+def get_metadata_and_abstract(driver, search_str, article_number):
     """Get metadata (title and PMID) for the research paper
     obtained as the top result of searching on PubMed.
 
@@ -33,7 +33,12 @@ def get_metadata_and_abstract(driver, search_str):
 
     # navigate to top search result
     try:
-        result = driver.find_element(By.CLASS_NAME, "docsum-title")
+        results = driver.find_elements(By.CLASS_NAME, "docsum-title")
+        if len(results) < article_number:
+            return {
+                "status": 404,
+            }
+        result = results[article_number - 1]
         result.click()
         time.sleep(5)
     except NoSuchElementException:
@@ -73,18 +78,18 @@ def main():
     search_str = "transmucosal implant placement"
 
     # get metadata (title and PMID) based on first result from search
-    search_result = get_metadata_and_abstract(driver, search_str)
+    result = get_metadata_and_abstract(driver, search_str, 1)
 
-    if search_result["status"] == 404:
+    if result["status"] == 404:
         print("Sorry, no research paper found!")
-        print(f"STATUS: {search_result['status']}")
-    elif search_result["status"] == 200:
+        print(f"STATUS: {result['status']}")
+    elif result["status"] == 200:
         print(f"Found the following research paper:")
-        print(f"Title: {search_result['title']}")
-        print(f"PMID: {search_result['pmid']}")
-        print(f"Authors: {search_result['authors']}")
-        print(f"Abstract: {search_result['abstract']}")
-        print(f"STATUS: {search_result['status']}")
+        print(f"Title: {result['title']}")
+        print(f"PMID: {result['pmid']}")
+        print(f"Authors: {result['authors']}")
+        print(f"Abstract: {result['abstract']}")
+        print(f"STATUS: {result['status']}")
     else:
         print(f"An unknown error has occured.")
 
