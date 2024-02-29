@@ -12,28 +12,29 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 # load researcher utilities
 from researchers.utilities import configure_llm
 
-# load Stella
+# load Stella's functions
 from researchers.stella import get_context
 
 
 def initialize_prompt(question):
     # setup prompt template
     prompt_template = PromptTemplate.from_template(
-        """You are Maya, a friendly and helpful AI chatbot who is proficient
-    in answering queries about medical research. You have been asked the following question:
+        """You are Maya, a friendly and helpful AI chatbot in a team of AI chatbots who are assisting a user in medical research.
 
-    {question}
+You are proficient in answering queries about medical research. You have been asked the following question:
 
-    You must answer based on the following context:
+{question}
 
-    {context}
+You must answer based on the following context:
 
-    ---
+{context}
 
-    Do not attempt to answer from your own knowledge. Provide citations in your answer using the information
-    provided in the above context.
+---
 
-    Your response:"""
+Do not attempt to answer from your own knowledge. Provide citations in your answer using the information
+provided in the above context.
+
+Your response:"""
     )
 
     # initialize search phrase and article count (for context retrieval)
