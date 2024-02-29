@@ -1,8 +1,17 @@
+import os
+import sys
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from .utilities import set_up_driver, sanitize_pubmed_authors
 from selenium.common.exceptions import NoSuchElementException
+
+
+# add parent directory to Python path
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+# load scraper utilities
+from scrapers.utilities import set_up_driver, sanitize_pubmed_authors
 
 
 def get_metadata_and_abstract(driver, search_str, article_number):
