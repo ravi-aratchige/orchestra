@@ -4,6 +4,11 @@ from langchain_community.llms import Cohere
 
 
 def configure_llm():
+    """Configure and return an instance of an LLM for researchers to use.
+
+    Returns:
+        langchain_community.llms: LLM instance providing connectivity to remotely-hosted large language models
+    """
     # load Cohere API key
     load_dotenv()
     os.environ["COHERE_API_KEY"] = os.getenv("COHERE_API_KEY")
