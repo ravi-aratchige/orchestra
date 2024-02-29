@@ -33,8 +33,7 @@ def initialize_prompt(question):
     Do not attempt to answer from your own knowledge. Provide citations in your answer using the information
     provided in the above context.
 
-    Your response:
-    """
+    Your response:"""
     )
 
     # initialize search phrase and article count (for context retrieval)
