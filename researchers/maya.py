@@ -4,21 +4,16 @@
 import os
 import sys
 from langchain.prompts import PromptTemplate
-from .utilities import configure_llm
 
-# load scrapers
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-from scrapers.utilities import set_up_driver
-from scrapers.pubmed import get_metadata_and_abstract
+# add parent directory to Python path
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 
+# load researcher utilities
+from researchers.utilities import configure_llm
 
-def get_context(search_phrase, article_count):
-    driver = set_up_driver()
-    context = ""
-
-    for i in range(1, article_count):
-        search_result = get_metadata_and_abstract(driver, search_phrase)
-        pass
+# load Stella
+from researchers.stella import get_context
 
 
 def initialize_prompt(question):
@@ -42,15 +37,15 @@ def initialize_prompt(question):
     """
     )
 
-    # initialize inputs
+    # initialize search phrase and article count (for context retrieval)
     search_phrase = "transmucosal implant placement"
-    driver = set_up_driver()
-    search_result = get_metadata_and_abstract(driver, search_phrase)
-    context = f"""Title: {search_result["title"]}
-    PMID: {search_result['pmid']}
-    Authors: {search_result['authors']}
-    Abstract: {search_result['abstract']}
-    """
+    article_count = 3
+
+    # load context from Stella
+    context = get_context(
+        search_phrase,
+        article_count,
+    )
 
     # initialize prompt with inputs
     prompt = prompt_template.format(
@@ -69,12 +64,12 @@ def main():
     # initialize prompt
     prompt = initialize_prompt(
         question=(
-            "What is the name of the study done regarding transmucosal implant placement?"
+            "What studies have been done regarding transmucosal implant placement?"
         )
     )
 
     # get output from model
-    output = llm(prompt)
+    output = llm.invoke(prompt)
     print(f"Output: {output}")
 
 
