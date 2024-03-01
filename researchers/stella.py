@@ -8,7 +8,6 @@ Stella is part of the `researchers` package.
 
 import os
 import sys
-from webbrowser import get
 from langchain.prompts import PromptTemplate
 
 # add parent directory to Python path
