@@ -23,11 +23,16 @@ from scrapers.pubmed import get_metadata_and_abstract
 from researchers.utilities import configure_llm
 
 # load Orion's functions
-from researchers.orion import get_search_phrases
+from researchers.orion import decompose_query_into_search_phrases
+
+# set default value for article count (when user's query is ambiguous)
+DEFAULT_ARTICLE_COUNT = 3
 
 
-def get_context(search_phrase, article_count=1):
-    """Retrieve context from PubMed for specified number of articles
+def retrieve_context(search_phrases, query):
+    """Stella's main function.
+
+    This function retrieves context from PubMed for specified number of articles
     from search results.\n
 
     Default value for article count is set to 1, to ensure at least one article
@@ -40,11 +45,17 @@ def get_context(search_phrase, article_count=1):
     Returns:
         str: Context required by Maya
     """
+
+    print(
+        f"INFO: Stella's main function ({retrieve_context.__name__}) has been invoked."
+    )
+
     driver = set_up_driver()
+    article_count = calculate_article_count(query)
     context = ""
 
     for i in range(1, article_count + 1):
-        search_result = get_metadata_and_abstract(driver, search_phrase, i)
+        search_result = get_metadata_and_abstract(driver, search_phrases, i)
         if search_result["status"] == 200:
             context += f"Title: {search_result['title']}\n"
             context += f"PMID: {search_result['pmid']}\n"
@@ -52,7 +63,7 @@ def get_context(search_phrase, article_count=1):
             context += f"Abstract: {search_result['abstract']}\n\n"
         elif search_result["status"] == 404:
             print(
-                f"No result found for article {i} with search phrase '{search_phrase}'"
+                f"No result found for article {i} with search phrase '{search_phrases}'"
             )
         else:
             print(f"An unknown error occurred while retrieving article {i}")
@@ -93,12 +104,12 @@ Query: Tell me about a research paper written about genomic characterization
 Response: 1
 
 For scenarios where the user's query doesn't specify any number, and Maya could benefit from having multiple research papers
-to validate her answers, generate 3 as the output.
+to validate her answers, generate {default_article_count} as the output.
 
 For example:
 
 Query: What can you tell me about pancreas anatomy?
-Response: 3
+Response: {default_article_count}
 
 Only generate the integer value as the output. Do not say anything else. Now analyze this query and decide the number of research papers necessary:
 
@@ -108,6 +119,7 @@ Response:"""
 
     # initialize prompt with user's query
     prompt = prompt_template.format(
+        default_article_count=DEFAULT_ARTICLE_COUNT,
         query=(query),
     )
 
@@ -127,7 +139,7 @@ def calculate_article_count(query):
         article_count = int(llm.invoke(prompt))
     except ValueError:
         print(
-            f"ERROR: Stella did not generate a valid integer! Defaulting to 3 articles..."
+            f"ERROR: Stella did not generate a valid integer! Defaulting to {DEFAULT_ARTICLE_COUNT} articles..."
         )
         article_count = 3
 
@@ -139,17 +151,18 @@ def calculate_article_count(query):
 
 
 def main():
+    """Runs demo of Stella in action."""
+
     # initialize demo user query
     query = (
         "I want to know about research done regarding transmucosal implant placement"
     )
 
     # get search phrases and article count for demo query
-    search_phrase = get_search_phrases(query)
-    article_count = calculate_article_count(query)
+    search_phrase = decompose_query_into_search_phrases(query)
 
     # retrieve context for relevant search
-    context = get_context(search_phrase, article_count)
+    context = retrieve_context(search_phrase, query)
 
     print(context)
 
