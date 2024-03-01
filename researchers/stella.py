@@ -18,10 +18,8 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 from scrapers.utilities import set_up_driver
 from scrapers.pubmed import get_metadata_and_abstract
 
-# load researcher utilities
+# load researcher functions and utilities
 from researchers.utilities import configure_llm
-
-# load Orion's functions
 from researchers.orion import decompose_query_into_search_phrases
 
 # set default value for article count (when user's query is ambiguous)
@@ -49,10 +47,15 @@ def retrieve_context(search_phrases, query):
         f"INFO: Stella's main function ({retrieve_context.__name__}) has been invoked."
     )
 
+    # set up driver for PubMed search
     driver = set_up_driver()
+
+    # determine article count from user query
     article_count = calculate_article_count(query)
+
     context = ""
 
+    # iterate through search results and add items to context
     for i in range(1, article_count + 1):
         search_result = get_metadata_and_abstract(driver, search_phrases, i)
         if search_result["status"] == 200:
