@@ -52,7 +52,23 @@ Search phrase(s):"""
     return prompt
 
 
-def get_search_phrases(query) -> str:
+def decompose_query_into_search_phrases(query) -> str:
+    """Orion's main function.
+
+    This function decomposes the user's query into one or more search phrases
+    for Stella to perform context retrieval.
+
+    Args:
+        query (str): the user's query, sent by Titan
+
+    Returns:
+        str: search phrase(s), concatenated with "AND" if multiple available
+    """
+
+    print(
+        f"INFO: Orion's main function ({decompose_query_into_search_phrases.__name__}) has been invoked."
+    )
+
     # set up LLM
     llm = configure_llm()
 
@@ -68,11 +84,13 @@ def get_search_phrases(query) -> str:
 
 
 def main():
+    """Runs demo of Orion in action."""
+
     # initialize demo question
     query = "Tell me about genomic characterization in cancer genomes"
 
     # get search phrases for demo question
-    search_phrases = get_search_phrases(query)
+    search_phrases = decompose_query_into_search_phrases(query)
 
     print(f"Orion's output: {search_phrases}")
 
