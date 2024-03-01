@@ -1,4 +1,6 @@
 """Maya performs inference based on the user's query and context retrieved by Stella.
+
+Maya is part of the `researchers` package.
 """
 
 import os
@@ -16,14 +18,14 @@ from researchers.utilities import configure_llm
 from researchers.stella import get_context
 
 
-def initialize_prompt(question):
+def initialize_prompt_for_response_generation(query):
     # setup prompt template
     prompt_template = PromptTemplate.from_template(
         """You are Maya, a friendly and helpful AI chatbot in a team of AI chatbots who are assisting a user in medical research.
 
-You are proficient in answering queries about medical research. You have been asked the following question:
+Your role is answering queries about medical research. You have been asked the following query:
 
-{question}
+{query}
 
 You must answer based on the following context:
 
@@ -49,7 +51,7 @@ Your response:"""
 
     # initialize prompt with inputs
     prompt = prompt_template.format(
-        question=question,
+        query=query,
         context=context,
     )
 
@@ -62,10 +64,8 @@ def main():
     llm = configure_llm()
 
     # initialize prompt
-    prompt = initialize_prompt(
-        question=(
-            "What studies have been done regarding transmucosal implant placement?"
-        )
+    prompt = initialize_prompt_for_response_generation(
+        query=("What studies have been done regarding transmucosal implant placement?")
     )
 
     # get output from model
