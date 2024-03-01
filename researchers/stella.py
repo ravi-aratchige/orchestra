@@ -140,7 +140,7 @@ def calculate_article_count(query):
         print(
             f"ERROR: Stella did not generate a valid integer! Defaulting to {DEFAULT_ARTICLE_COUNT} articles..."
         )
-        article_count = 3
+        article_count = DEFAULT_ARTICLE_COUNT
 
     print(
         f"Stella has determined that {article_count} articles are sufficient for this."
