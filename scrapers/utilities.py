@@ -1,3 +1,8 @@
+"""Contains utilities to be used by scrapers.\n
+
+e.g. Setting up WebDriver, sanitizing scraped data etc.
+"""
+
 import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options

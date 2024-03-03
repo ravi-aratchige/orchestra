@@ -1,3 +1,8 @@
+"""Contains utilities to be used by researchers.\n
+
+e.g. Configuring LLMs
+"""
+
 import os
 from dotenv import load_dotenv
 from langchain_community.llms import Cohere
